@@ -24,7 +24,7 @@ defmodule Coinbase.Client do
   end
 
   def handle_msg(%{"type" => "match"} = trade, state) do
-    IO.inspect(trade)
+    Coinbase.Aggregation.new_trade(trade)
     {:ok, state}
   end
 

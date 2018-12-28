@@ -3,7 +3,12 @@ defmodule Coinbase.Application do
 
   def start(_type, _args) do
     children = [
-      {Coinbase.Client, ["BTC-USD"]}
+      {Coinbase.Aggregation, []},
+      {Coinbase.Client, ["BTC-USD", "BTC-EUR", "BTC-GBP",
+          "ETH-USD", "ETH-EUR", "ETH-GBP",
+          "LTC-USD", "LTC-EUR", "LTC-GBP",
+          "BTC-USD"]
+      }
     ]
 
     opts = [strategy: :one_for_one, name: Coinbase.Supervisor]
