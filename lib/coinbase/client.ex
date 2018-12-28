@@ -23,8 +23,8 @@ defmodule Coinbase.Client do
     handle_msg(Poison.decode!(msg), state)
   end
 
-  def handle_msg(%{"type" => "match"} = trade, state) do
-    Coinbase.Aggregation.new_trade(trade)
+  def handle_msg(%{"time" => _} = msg, state) do
+    Coinbase.Aggregation.new_message(msg)
     {:ok, state}
   end
 
@@ -36,11 +36,10 @@ defmodule Coinbase.Client do
   end
 
   defp subscription_frame(products) do
-    subscription_json =
-      %{
+    subscription_json = %{
         type: "subscribe",
         product_ids: products,
-        channels: ["matches"]
+        channels: ["matches", "level2"]
       }
       |> Poison.encode!()
 

@@ -7,11 +7,11 @@ defmodule Coinbase.Aggregation do
 
   def init(:ok), do: {:ok, %{}}
 
-  def new_message(pid, trade),
-    do: GenServer.cast(pid, {:new_trade, trade})
+  def new_message(msg),
+    do: new_message(Coinbase.Aggregation, msg)
 
-  def new_message(trade),
-    do: new_trade(Coinbase.Aggregation, trade)
+  def new_message(pid, msg),
+    do: GenServer.cast(pid, {:new_message, msg})
 
   def handle_cast({:new_message, %{"time" => time}}, %{}=counts) do
     {:ok, dt, _} = DateTime.from_iso8601(time)
