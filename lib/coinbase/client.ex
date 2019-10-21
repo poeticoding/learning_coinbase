@@ -20,7 +20,7 @@ defmodule Coinbase.Client do
   end
 
   def handle_frame({:text, msg}, state) do
-    handle_msg(Poison.decode!(msg), state)
+    handle_msg(Jason.decode!(msg), state)
   end
 
   def handle_msg(%{"time" => _} = msg, state) do
@@ -36,12 +36,13 @@ defmodule Coinbase.Client do
   end
 
   defp subscription_frame(products) do
-    subscription_json = %{
+    subscription_json =
+      %{
         type: "subscribe",
         product_ids: products,
         channels: ["matches", "level2"]
       }
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     {:text, subscription_json}
   end
